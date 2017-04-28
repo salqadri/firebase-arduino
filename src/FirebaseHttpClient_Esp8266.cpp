@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#include "FirebaseRootCA.h"
+
 // The ordering of these includes matters greatly.
 #include <WiFiClientSecure.h>
 #include <ESP8266WiFi.h>
@@ -24,11 +26,17 @@ class FirebaseHttpClientEsp8266 : public FirebaseHttpClient {
   }
 
   void begin(const std::string& url) override {
-    http_.begin(url.c_str(), kFirebaseFingerprint);
+    http_.begin(url.c_str());
+    http_.setRootCA(GeoTrustCA_cer, GeoTrustCA_cer_len);
   }
 
   void begin(const std::string& host, const std::string& path) override {
-    http_.begin(host.c_str(), kFirebasePort, path.c_str(), kFirebaseFingerprint);
+    http_.begin(host.c_str(), kFirebasePort, path.c_str());
+    http_.setRootCA(GeoTrustCA_cer, GeoTrustCA_cer_len);
+  }
+
+  bool connected() override {
+    return http_.connected();
   }
 
   void end() override {

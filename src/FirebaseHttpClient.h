@@ -17,7 +17,7 @@ class FirebaseHttpClient {
   virtual void setReuseConnection(bool reuse) = 0;
   virtual void begin(const std::string& url) = 0;
   virtual void begin(const std::string& host, const std::string& path) = 0;
-
+  virtual bool connected() = 0;
   virtual void end() = 0;
 
   virtual void addHeader(const std::string& name, const std::string& value) = 0;
